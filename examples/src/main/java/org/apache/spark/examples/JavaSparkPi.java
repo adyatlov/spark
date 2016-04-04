@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+package org.apache.spark.examples;
+
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -37,7 +39,7 @@ public final class JavaSparkPi {
         JavaSparkContext jsc = new JavaSparkContext(sparkConf);
         Scanner scanner = new Scanner(JavaSparkPi.class.getResourceAsStream("pi.conf"));
         int slices;
-        if (scanner.hasNextInt()){
+        if (scanner.hasNextInt()) {
             slices = scanner.nextInt();
         } else {
             slices = 2;
