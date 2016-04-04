@@ -23,7 +23,6 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.Function2;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -34,40 +33,40 @@ import java.util.Scanner;
  */
 public final class JavaSparkPi {
 
-    public static void main(String[] args) throws Exception {
-        SparkConf sparkConf = new SparkConf().setAppName("JavaSparkPi");
-        JavaSparkContext jsc = new JavaSparkContext(sparkConf);
-        Scanner scanner = new Scanner(JavaSparkPi.class.getResourceAsStream("pi.conf"));
-        int slices;
-        if (scanner.hasNextInt()) {
-            slices = scanner.nextInt();
-        } else {
-            slices = 2;
-        }
-        int n = 100000 * slices;
-        List<Integer> l = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) {
-            l.add(i);
-        }
-
-        JavaRDD<Integer> dataSet = jsc.parallelize(l, slices);
-
-        int count = dataSet.map(new Function<Integer, Integer>() {
-            @Override
-            public Integer call(Integer integer) {
-                double x = Math.random() * 2 - 1;
-                double y = Math.random() * 2 - 1;
-                return (x * x + y * y < 1) ? 1 : 0;
-            }
-        }).reduce(new Function2<Integer, Integer, Integer>() {
-            @Override
-            public Integer call(Integer integer, Integer integer2) {
-                return integer + integer2;
-            }
-        });
-
-        System.out.println("Pi is roughly " + 4.0 * count / n);
-
-        jsc.stop();
+  public static void main(String[] args) throws Exception {
+    SparkConf sparkConf = new SparkConf().setAppName("JavaSparkPi");
+    JavaSparkContext jsc = new JavaSparkContext(sparkConf);
+    Scanner scanner = new Scanner(JavaSparkPi.class.getResourceAsStream("pi.conf"));
+    int slices;
+    if (scanner.hasNextInt()) {
+      slices = scanner.nextInt();
+    } else {
+      slices = 2;
     }
+    int n = 100000 * slices;
+    List<Integer> l = new ArrayList<>(n);
+    for (int i = 0; i < n; i++) {
+      l.add(i);
+    }
+
+    JavaRDD<Integer> dataSet = jsc.parallelize(l, slices);
+
+    int count = dataSet.map(new Function<Integer, Integer>() {
+      @Override
+      public Integer call(Integer integer) {
+        double x = Math.random() * 2 - 1;
+        double y = Math.random() * 2 - 1;
+        return (x * x + y * y < 1) ? 1 : 0;
+      }
+    }).reduce(new Function2<Integer, Integer, Integer>() {
+      @Override
+      public Integer call(Integer integer, Integer integer2) {
+        return integer + integer2;
+      }
+    });
+
+    System.out.println("Pi is roughly " + 4.0 * count / n);
+
+    jsc.stop();
+  }
 }
