@@ -36,6 +36,7 @@ public final class JavaSparkPi {
   public static void main(String[] args) throws Exception {
     SparkConf sparkConf = new SparkConf().setAppName("JavaSparkPi");
     JavaSparkContext jsc = new JavaSparkContext(sparkConf);
+
     Scanner scanner = new Scanner(JavaSparkPi.class.getResourceAsStream("pi.conf"));
     int slices;
     if (scanner.hasNextInt()) {
